@@ -1,0 +1,296 @@
+
+  Introduction
+
+
+  La résolution de systèmes d'équations linéaires, de la forme Ax = b, est l'un des problèmes les plus
+  fondamentaux et les plus courants en mathématiques appliquées, en sciences et en ingénierie. Ces systèmes
+  modélisent une multitude de phénomènes, allant des circuits électriques à la mécanique des structures, en
+  passant par l'analyse de données.
+
+
+  En théorie, si une solution existe et est unique, elle peut être trouvée de manière exacte. Cependant, en
+  pratique, les données d'entrée (la matrice A et le vecteur b) proviennent souvent de mesures
+  expérimentales ou de calculs antérieurs, et sont donc inévitablement entachées d'erreurs ou
+  d'incertitudes. Un enjeu majeur de l'analyse numérique est de comprendre comment ces petites perturbations
+   dans les données initiales peuvent affecter la solution calculée. Dans certains cas, une erreur infime en
+   entrée peut provoquer une erreur très importante en sortie, rendant la solution numérique totalement
+  inexploitable. Ce phénomène est connu sous le nom d'instabilité numérique.
+
+
+  La sensibilité d'un système linéaire à ces perturbations est mesurée par une valeur clé : le nombre de
+  condition de la matrice A. Un système dont la matrice est "bien conditionnée" (nombre de condition proche
+  de 1) est robuste et stable. À l'inverse, un système "mal conditionné" (grand nombre de condition) est
+  très sensible aux erreurs, et sa résolution numérique est délicate.
+
+
+  L'objectif de ce projet est d'étudier de manière pratique, à l'aide du logiciel Octave, l'impact du
+  conditionnement sur la stabilité des solutions de systèmes linéaires. Nous implémenterons d'abord des
+  fonctions pour calculer le nombre de condition et l'erreur relative. Ensuite, nous analyserons l'effet de
+  perturbations contrôlées sur la matrice et le second membre. Enfin, nous étudierons le comportement de
+  matrices notoirement mal conditionnées et comparerons la robustesse de différentes méthodes de résolution.
+
+
+
+
+
+### 1. Calcul du Nombre de Condition
+
+**`Conditionnement1.m`**
+```matlab
+function cond_1 = Conditionnement1(A)
+    % Calcule le conditionnement de la matrice A dans la norme 1.
+    % A: Matrice d''entrée
+    % cond_1: Conditionnement de A dans la norme 1
+    if det(A) == 0
+        cond_1 = inf;
+        return;
+    end
+    cond_1 = norm(A, 1) * norm(inv(A), 1);
+end
+```
+
+**`ConditionnementInf.m`**
+```matlab
+function cond_inf = ConditionnementInf(A)
+    % Calcule le conditionnement de la matrice A dans la norme infinie.
+    % A: Matrice d''entrée
+    % cond_inf: Conditionnement de A dans la norme infinie
+    if det(A) == 0
+        cond_inf = inf;
+        return;
+    end
+    cond_inf = norm(A, inf) * norm(inv(A), inf);
+end
+```
+
+**`Conditionnement2.m`**
+```matlab
+function cond_2 = Conditionnement2(A)
+    % Calcule le conditionnement de la matrice A dans la norme 2.
+    % A: Matrice d''entrée
+    % cond_2: Conditionnement de A dans la norme 2
+    if det(A) == 0
+        cond_2 = inf;
+        return;
+    end
+    cond_2 = norm(A, 2) * norm(inv(A), 2);
+end
+```
+
+### 2. Calcul de l''Erreur Relative
+
+**`ErreurRelative.m`**
+```matlab
+function err_rel = ErreurRelative(A, b, x_exact)
+    % Résout Ax = b et calcule l''erreur relative.
+    % A: Matrice du système
+    % b: Vecteur du second membre
+    % x_exact: Solution exacte
+    % err_rel: Erreur relative
+    x_num = A \ b;
+    err_rel = norm(x_num - x_exact, 1) / norm(x_exact, 1);
+end
+```
+
+### 3. Étude de Perturbation (Second Membre)
+
+**`etude_perturbation_b.m`**
+```matlab
+% Script pour étudier l''effet de la perturbation du second membre b
+A = rand(5);
+x_exact = ones(5, 1);
+b = A * x_exact;
+
+delta = 1e-6 * rand(5, 1);
+b_perturbe = b + delta;
+
+x_perturbe = A \ b_perturbe;
+
+erreur = norm(x_perturbe - x_exact) / norm(x_exact);
+disp([''Erreur relative due à la perturbation de b: '', num2str(erreur)]);
+```
+
+### 4. Étude de Perturbation (Matrice)
+
+**`etude_perturbation_A.m`**
+```matlab
+% Script pour étudier l''effet de la perturbation de la matrice A
+A = rand(10);
+x_exact = ones(10, 1);
+b = A * x_exact;
+n_eps = 20;
+valeurs_epsilon = logspace(-16, 0, n_eps);
+erreurs = zeros(1, n_eps);
+conds = zeros(1, n_eps);
+
+for i = 1:n_eps
+    epsilon = valeurs_epsilon(i);
+    B = rand(10);
+    A_perturbee = A + epsilon * B;
+    
+    x_perturbe = A_perturbee \ b;
+    
+    erreurs(i) = norm(x_perturbe - x_exact) / norm(x_exact);
+    conds(i) = cond(A_perturbee);
+end
+
+figure;
+loglog(valeurs_epsilon, erreurs, ''-o'');
+title(''Évolution de l''''erreur relative en fonction de epsilon'');
+xlabel(''Epsilon'');
+ylabel(''Erreur relative'');
+
+figure;
+loglog(valeurs_epsilon, conds, ''-o'');
+title(''Évolution du conditionnement en fonction de epsilon'');
+xlabel(''Epsilon'');
+ylabel(''Conditionnement'');
+```
+
+### 5. Étude de Matrices Classiques
+
+**`etude_matrices_classiques.m`**
+```matlab
+% Script pour étudier les matrices classiques
+n = 8;
+x_exact = ones(n, 1);
+
+% Matrice de Hilbert
+H = hilb(n);
+b_h = H * x_exact;
+err_h = ErreurRelative(H, b_h, x_exact);
+disp(''Matrice de Hilbert:'');
+disp([''  Conditionnement (1, inf, 2): '', num2str(cond(H,1)), '', '', num2str(cond(H,inf)), '', '', num2str(cond(H,2))]);
+disp([''  Erreur relative: '', num2str(err_h)]);
+
+% Matrice de Vandermonde
+V = vander(1:n);
+b_v = V * x_exact;
+err_v = ErreurRelative(V, b_v, x_exact);
+disp(''Matrice de Vandermonde:'');
+disp([''  Conditionnement (1, inf, 2): '', num2str(cond(V,1)), '', '', num2str(cond(V,inf)), '', '', num2str(cond(V,2))]);
+disp([''  Erreur relative: '', num2str(err_v)]);
+
+% Matrice tridiagonale
+T = diag(4*ones(n,1)) + diag(-1*ones(n-1,1),1) + diag(-1*ones(n-1,1),-1);
+b_t = T * x_exact;
+err_t = ErreurRelative(T, b_t, x_exact);
+disp(''Matrice tridiagonale:'');
+disp([''  Conditionnement (1, inf, 2): '', num2str(cond(T,1)), '', '', num2str(cond(T,inf)), '', '', num2str(cond(T,2))]);
+disp([''  Erreur relative: '', num2str(err_t)]);
+```
+
+### 6. Comparaison LU vs. Résolution Directe
+
+**`comparaison_lu_directe.m`**
+```matlab
+% Script pour comparer la résolution directe et la factorisation LU
+A = rand(50);
+x_exact = ones(50, 1);
+b = A * x_exact;
+
+% Résolution directe
+tic;
+x_direct = A \ b;
+temps_direct = toc;
+err_direct = norm(x_direct - x_exact) / norm(x_exact);
+
+% Factorisation LU
+tic;
+[L, U, P] = lu(A);
+y = L \ (P*b);
+x_lu = U \ y;
+temps_lu = toc;
+err_lu = norm(x_lu - x_exact) / norm(x_exact);
+
+disp(''Comparaison LU vs. Directe:'');
+disp([''  Temps (Direct): '', num2str(temps_direct), ''s, Erreur: '', num2str(err_direct)]);
+disp([''  Temps (LU): '', num2str(temps_lu), ''s, Erreur: '', num2str(err_lu)]);
+```
+
+### 7. Script de Visualisation
+
+**`FigureConditionnement.m`**
+```matlab
+function FigureConditionnement()
+    % Génère des graphiques pour visualiser l''impact du conditionnement.
+    n = 10;
+    x_exact = ones(n, 1);
+    valeurs_epsilon = logspace(-12, 0, 50);
+    
+    % Matrice aléatoire
+    A_aleatoire = rand(n);
+    b_aleatoire = A_aleatoire * x_exact;
+    
+    % Matrice de Hilbert
+    A_hilbert = hilb(n);
+    b_hilbert = A_hilbert * x_exact;
+    
+    err_aleatoire = arrayfun(@(eps) calc_err(A_aleatoire, b_aleatoire, x_exact, eps), valeurs_epsilon);
+    err_hilbert = arrayfun(@(eps) calc_err(A_hilbert, b_hilbert, x_exact, eps), valeurs_epsilon);
+    
+    cond_aleatoire = arrayfun(@(eps) cond(A_aleatoire + eps*rand(n)), valeurs_epsilon);
+    cond_hilbert = arrayfun(@(eps) cond(A_hilbert + eps*rand(n)), valeurs_epsilon);
+
+    figure;
+    subplot(2, 1, 1);
+    loglog(valeurs_epsilon, err_aleatoire, ''r-o'', valeurs_epsilon, err_hilbert, ''b-x'');
+    title(''Erreur relative vs. Epsilon'');
+    xlabel(''Epsilon'');
+    ylabel(''Erreur Relative'');
+    legend(''Aléatoire'', ''Hilbert'');
+    grid on;
+
+    subplot(2, 1, 2);
+    loglog(valeurs_epsilon, cond_aleatoire, ''r-o'', valeurs_epsilon, cond_hilbert, ''b-x'');
+    title(''Conditionnement vs. Epsilon'');
+    xlabel(''Epsilon'');
+    ylabel(''Conditionnement'');
+    legend(''Aléatoire'', ''Hilbert'');
+    grid on;
+end
+
+function err = calc_err(A, b, x_exact, epsilon)
+    B = rand(size(A));
+    A_perturbee = A + epsilon * B;
+    x_perturbe = A_perturbee \ b;
+    err = norm(x_perturbe - x_exact) / norm(x_exact);
+end
+```
+
+### 8. Fonctions Bonus
+
+**`EstMalConditionnee.m`**
+```matlab
+function est_mal = EstMalConditionnee(A, seuil)
+    % Vérifie si une matrice est mal conditionnée.
+    % A: Matrice d''entrée
+    % seuil: Seuil pour le conditionnement
+    % est_mal: Booléen (vrai si mal conditionnée)
+    est_mal = cond(A) > seuil;
+end
+```
+
+**`test_regularisation.m`**
+```matlab
+% Script pour tester la régularisation
+n = 10;
+H = hilb(n);
+x_exact = ones(n, 1);
+b = H * x_exact;
+
+disp([''Conditionnement de Hilbert: '', num2str(cond(H))]);
+
+% Solution sans régularisation
+x_sol = H \ b;
+err_sol = norm(x_sol - x_exact) / norm(x_exact);
+disp([''Erreur sans régularisation: '', num2str(err_sol)]);
+
+% Solution avec régularisation de Tikhonov
+lambda = 1e-10;
+H_reg = H + lambda * eye(n);
+x_reg = H_reg \ b;
+err_reg = norm(x_reg - x_exact) / norm(x_exact);
+disp([''Erreur avec régularisation (lambda='', num2str(lambda), ''): '', num2str(err_reg)]);
+disp([''Conditionnement avec régularisation: '', num2str(cond(H_reg))]);
+```

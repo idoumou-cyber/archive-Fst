@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>rapport.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="projet-danalyse-num%C3%A9rique-i--sur-la-sensibilit%C3%A9-des-syst%C3%A8mes-lin%C3%A9aires">Projet d'Analyse Numérique I : Sur la sensibilité des systèmes linéaires</h1>
+<p><strong>Université :</strong> Université de Nouakchott
+<strong>Faculté :</strong> Faculté des Sciences et Techniques
+<strong>Département :</strong> Mathématiques et Informatiques</p>
+<p><strong>Les membres de groupe :</strong>
+IdoumouSid 'Ahmed C24549
+Cheikh Youssef Cheikh Mohamed vadel C24659
+Lemrabett MohamedenMoutaly C24782</p>
+<p><strong>Professeur :</strong> Dr. Mohamed Saad Bouh ELEMINE VALL
+<strong>Date :</strong> Mardi, 1er Juillet 2025</p>
+<hr>
+<h2 id="1-introduction">1. Introduction</h2>
+<p>Ce projet vise à analyser l'influence du conditionnement d'une matrice sur la stabilité et la précision de la solution d'un système linéaire de la forme <code>Ax=b</code>. L'objectif est d'explorer comment de petites perturbations sur la matrice <code>A</code> ou le vecteur <code>b</code> peuvent affecter la solution <code>x</code>, et d'évaluer la robustesse des algorithmes de résolution en fonction du conditionnement de la matrice.</p>
+<hr>
+<h2 id="2-m%C3%A9thodologie">2. Méthodologie</h2>
+<p>Nous avons développé plusieurs fonctions et scripts MATLAB/Octave pour aborder les différentes tâches du projet :</p>
+<ul>
+<li><code>Conditionnement1.m</code>, <code>ConditionnementInf.m</code>, <code>Conditionnement2.m</code> : Fonctions pour calculer le nombre de condition d'une matrice selon différentes normes.</li>
+<li><code>ErreurRelative.m</code> : Fonction pour calculer l'erreur relative entre une solution numérique et une solution exacte.</li>
+<li><code>EtudePerturbationB.m</code> : Script pour étudier l'effet de la perturbation du second membre <code>b</code>.</li>
+<li><code>EtudePerturbationA.m</code> : Script pour étudier l'effet de la perturbation de la matrice <code>A</code>.</li>
+<li><code>EtudeMatriceHilbert.m</code> : Script d'exemple pour l'étude des matrices classiques (Hilbert).</li>
+<li><code>EtudeMatriceVandermonde.m</code> : Script pour l'étude des matrices de Vandermonde.</li>
+<li><code>EtudeMatriceTridiagonale.m</code>: Script pour l'étude des matrices des Tridiagonales.</li>
+<li><code>ComparerLU.m</code> : Script pour comparer la résolution directe (<code>A\b</code>) et la factorisation LU.</li>
+<li><code>FigureConditionnement.m</code> : Script de visualisation pour comparer le comportement de différents types de matrices.</li>
+<li><code>EstMalConditionnee.m</code> : Fonction bonus pour vérifier si une matrice est mal conditionnée.</li>
+<li><code>test_regularisation.m</code> :Script pour tester la régularisation.</li>
+</ul>
+<hr>
+<h2 id="3-r%C3%A9sultats-et-analyses">3. Résultats et Analyses</h2>
+<h3 id="31-perturbation-du-second-membre-t%C3%A2che-3">3.1. Perturbation du second membre (Tâche 3)</h3>
+<p>Le script <code>EtudePerturbationB.m</code> a été exécuté pour analyser l'impact d'une petite perturbation sur le vecteur <code>b</code>.</p>
+<ul>
+<li><strong>Conditionnement de la matrice A :</strong> 41.935854</li>
+<li><strong>Norme de la perturbation sur b :</strong> 1.000000e-06</li>
+<li><strong>Erreur relative sur la solution x :</strong> 2.977988e-06</li>
+</ul>
+<p><strong>Analyse :</strong> Pour une matrice bien conditionnée, une petite perturbation sur le second membre <code>b</code> entraîne une erreur relative sur la solution <code>x</code> qui est également petite. Cela confirme la stabilité des systèmes linéaires lorsque la matrice est bien conditionnée.</p>
+<h3 id="32-perturbation-de-la-matrice-t%C3%A2che-4">3.2. Perturbation de la matrice (Tâche 4)</h3>
+<p>Le script <code>EtudePerturbationA.m</code> a été utilisé pour étudier l'effet de la perturbation de la matrice <code>A</code> sur la solution. Les graphiques ci-dessous montrent l'évolution de l'erreur relative et du conditionnement en fonction de la magnitude de la perturbation <code>epsilon</code>.</p>
+<p><img src="./figure_perturbation_A.png" alt="Graphique de l'erreur relative et du conditionnement en fonction de epsilon"></p>
+<p><strong>Analyse :</strong> Les graphiques montrent clairement que l'erreur relative sur la solution augmente avec la magnitude de la perturbation <code>epsilon</code>. De même, le conditionnement de la matrice perturbée augmente à mesure que la perturbation devient plus significative. Cela souligne la sensibilité des systèmes linéaires aux erreurs dans les données d'entrée, particulièrement lorsque le conditionnement de la matrice est élevé.</p>
+<h3 id="33-%C3%A9tude-de-matrices-classiques-t%C3%A2che-5">3.3. Étude de matrices classiques (Tâche 5)</h3>
+<p>Nous avons étudié le conditionnement et l'erreur relative pour différents types de matrices. Les résultats sont présentés ci-dessous pour une taille <code>n=10</code>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Type de Matrice</th>
+<th style="text-align:left">Taille (n)</th>
+<th style="text-align:left">κ₁(A)</th>
+<th style="text-align:left">κ₂(A)</th>
+<th style="text-align:left">κ∞(A)</th>
+<th style="text-align:left">Erreur Relative</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Hilbert</td>
+<td style="text-align:left">15</td>
+<td style="text-align:left">1.209245e+18</td>
+<td style="text-align:left">2.495952e+17</td>
+<td style="text-align:left">1.209245e+18</td>
+<td style="text-align:left">3.614178e+00</td>
+</tr>
+<tr>
+<td style="text-align:left">Vandermonde</td>
+<td style="text-align:left">15</td>
+<td style="text-align:left">4.241160e+07</td>
+<td style="text-align:left">1.519323e+07</td>
+<td style="text-align:left">4.818398e+07</td>
+<td style="text-align:left">9.683421e-12</td>
+</tr>
+<tr>
+<td style="text-align:left">Tridiagonale</td>
+<td style="text-align:left">15</td>
+<td style="text-align:left">3.300000e+01</td>
+<td style="text-align:left">2.664710e+01</td>
+<td style="text-align:left">3.300000e+01</td>
+<td style="text-align:left">0.000000e+00</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Analyse :</strong>
+Analyse : La matrice de Hilbert est un exemple classique de matrice extrêmement mal conditionnée, comme en témoigne son nombre de conditionnement très élevé (κ₂ ≈ 2.5e+17). Cette valeur gigantesque explique l'erreur relative très élevée (≈ 3.614e) observée, indiquant que la solution numérique est très éloignée de la solution exacte. Cela met en évidence la difficulté de résoudre numériquement des systèmes impliquant de telles matrices. La matrice de Vandermonde, bien que mieux conditionnée que la matrice de Hilbert pour cette taille, présente tout de même un conditionnement élevé, ce qui la rend sensible aux erreurs. L'erreur relative pour la matrice de Vandermonde est très faible, ce qui est un bon signe de précision pour cette configuration.</p>
+<p>La matrice tridiagonale testée montre un comportement <strong>numériquement optimal</strong> :</p>
+<ul>
+<li>
+<p><strong>Conditionnement très faible</strong> :<br>
+Les nombres de condition <strong>κ₁ = 33</strong>, <strong>κ₂ ≈ 26.65</strong> et <strong>κ∞ = 33</strong> sont très proches de <strong>1</strong>, ce qui indique que cette matrice est <strong>très bien conditionnée</strong>. Cela signifie qu’elle est extrêmement stable face aux perturbations, qu’elles proviennent des erreurs d’arrondi ou des données d’entrée.</p>
+</li>
+<li>
+<p><strong>Erreur relative nulle</strong> :<br>
+L’<strong>erreur relative observée est égale à 0</strong>, ce qui implique que la solution numérique obtenue est <strong>identique à la solution exacte</strong>, aux erreurs numériques près. Cela renforce l'idée que les matrices tridiagonales bien structurées sont <strong>extrêmement précises et stables</strong> lors de la résolution de systèmes linéaires.</p>
+</li>
+<li>
+<p><strong>Comparaison avec d'autres types de matrices</strong> :</p>
+<ul>
+<li>Contrairement à la <strong>matrice de Hilbert</strong> (mal conditionnée avec κ₂ ≈ 2.5e+17), ou même à la <strong>matrice de Vandermonde</strong> (assez mal conditionnée avec κ₂ ≈ 1.5e+7), la matrice tridiagonale reste <strong>numériquement robuste</strong>.</li>
+<li>Elle constitue donc un choix idéal pour des applications nécessitant stabilité, précision et efficacité, comme la résolution de systèmes linéaires issus de schémas numériques (ex. discrétisation de PDEs par différences finies).</li>
+</ul>
+</li>
+</ul>
+<h3 id="conclusion">Conclusion</h3>
+<p>La matrice tridiagonale utilisée dans cette étude illustre parfaitement une matrice <strong>bien adaptée à la résolution numérique</strong>. Grâce à son faible conditionnement et sa précision optimale, elle garantit une solution <strong>stable et fiable</strong>, même en présence de petites perturbations ou d’erreurs numériques. Ce type de matrice est couramment utilisé dans les méthodes numériques pour sa performance computationnelle et sa stabilité intrinsèque.</p>
+<h3 id="34-comparaison-lu-vs-r%C3%A9solution-directe-t%C3%A2che-6">3.4. Comparaison LU vs. Résolution Directe (Tâche 6)</h3>
+<p>Le script <code>ComparerLU.m</code> a été exécuté pour comparer la performance et la précision de la résolution directe (<code>A\b</code>) et de la factorisation LU. Les résultats sont basés sur les fragments de sortie fournis.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Matrice</th>
+<th style="text-align:left">Méthode</th>
+<th style="text-align:left">Temps (s)</th>
+<th style="text-align:left">Erreur Relative</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Aléatoire (bien cond.)</td>
+<td style="text-align:left">Directe ()</td>
+<td style="text-align:left">0.000635</td>
+<td style="text-align:left">7.735391e-14</td>
+</tr>
+<tr>
+<td style="text-align:left">Aléatoire (bien cond.)</td>
+<td style="text-align:left">LU</td>
+<td style="text-align:left">0.000786</td>
+<td style="text-align:left">5.434741e-14</td>
+</tr>
+<tr>
+<td style="text-align:left">Hilbert (mal cond.)</td>
+<td style="text-align:left">Directe ()</td>
+<td style="text-align:left">0.005687</td>
+<td style="text-align:left">6.140844e+00</td>
+</tr>
+<tr>
+<td style="text-align:left">Hilbert (mal cond.)</td>
+<td style="text-align:left">LU</td>
+<td style="text-align:left">0.018409</td>
+<td style="text-align:left">6.896856e+00</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Avertissement pour la matrice de Hilbert :</strong> Lors de la résolution avec la matrice de Hilbert, l'avertissement suivant a été émis : <code>Warning: Matrix is close to singular or badly scaled. Results may be inaccurate. RCOND = 5.460912e-19.</code></p>
+<p><strong>Analyse :</strong>
+Pour la <strong>matrice aléatoire (bien conditionnée)</strong>, les deux méthodes (directe et LU) sont rapides et produisent des erreurs relatives extrêmement faibles, proches de la précision machine. Cela indique une grande fiabilité pour les systèmes bien conditionnés.</p>
+<p>Pour la <strong>matrice de Hilbert (mal conditionnée)</strong>, bien que les calculs soient effectués, les erreurs relatives sont extrêmement élevées (≈ 6.14 pour la directe et ≈ 6.89 pour LU). L'avertissement de MATLAB/Octave confirme que la matrice est numériquement singulière. Cela démontre que, quelle que soit la méthode de résolution utilisée, un très mauvais conditionnement rend la solution numérique non fiable. Les temps d'exécution sont légèrement plus longs pour la matrice de Hilbert, reflétant la complexité numérique accrue.</p>
+<h3 id="35-comparaison-des-comportements-t%C3%A2che-7">3.5. Comparaison des comportements (Tâche 7)</h3>
+<p>Ce script visualise l'évolution de l'erreur relative pour différents types de matrices en fonction de la magnitude de la perturbation ($\epsilon$).</p>
+<p><img src="./FigureConditionnement.png" alt="Comparaison des types de matrices"></p>
+<p><strong>Analyse :</strong> Le graphique illustre clairement l'impact du conditionnement sur la stabilité de la solution. La courbe de la matrice de Hilbert (mal conditionnée) montre une augmentation très rapide de l'erreur relative même pour de très petites perturbations, indiquant une extrême sensibilité. La matrice diagonale, également mal conditionnée, présente un comportement similaire mais potentiellement moins extrême que Hilbert. En revanche, la matrice aléatoire (bien conditionnée) maintient une erreur relative très faible sur une large plage de perturbations, démontrant sa robustesse.</p>
+<hr>
+<h2 id="4-conclusion">4. Conclusion</h2>
+<p>Ce projet a permis de démontrer expérimentalement l'importance cruciale du conditionnement d'une matrice dans la résolution numérique des systèmes linéaires. Nous avons observé que les matrices mal conditionnées amplifient considérablement les erreurs (qu'elles proviennent des données d'entrée ou des erreurs d'arrondi de l'ordinateur), rendant la solution numérique potentiellement inutilisable. La méthode de résolution choisie (directe ou LU) a un impact mineur sur la précision lorsque la matrice est mal conditionnée, soulignant que la stabilité du système dépend avant tout des propriétés intrinsèques de la matrice elle-même.</p>
+<hr>
+<h2 id="5-annexe--code-source">5. Annexe : Code Source</h2>
+<h3 id="conditionnement1m"><code>Conditionnement1.m</code></h3>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">cond1</span> = <span class="hljs-title">Conditionnement1</span><span class="hljs-params">(A)</span></span>
+<span class="hljs-comment">%CONDITIONNEMENT1 Calcule le nombre de condition de la matrice A dans la norme 1.</span>
+<span class="hljs-comment">%   Renvoie le conditionnement de A en utilisant la norme 1.</span>
+cond1 = cond(A, <span class="hljs-number">1</span>);
+<span class="hljs-keyword">end</span>
+</div></code></pre>
+<h3 id="conditionnementinfm"><code>ConditionnementInf.m</code></h3>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">condInf</span> = <span class="hljs-title">ConditionnementInf</span><span class="hljs-params">(A)</span></span>
+<span class="hljs-comment">%CONDITIONNEMENTINF Calcule le nombre de condition de la matrice A dans la norme infinie.</span>
+<span class="hljs-comment">%   Renvoie le conditionnement de A en utilisant la norme infinie.</span>
+condInf = cond(A, <span class="hljs-built_in">inf</span>);
+<span class="hljs-keyword">end</span>
+</div></code></pre>
+<h3 id="conditionnement2m"><code>Conditionnement2.m</code></h3>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">cond2</span> = <span class="hljs-title">Conditionnement2</span><span class="hljs-params">(A)</span></span>
+<span class="hljs-comment">%CONDITIONNEMENT2 Calcule le nombre de condition de la matrice A dans la norme 2.</span>
+<span class="hljs-comment">%   Renvoie le conditionnement de A en utilisant la norme 2.</span>
+cond2 = cond(A, <span class="hljs-number">2</span>);
+<span class="hljs-keyword">end</span>
+</div></code></pre>
+<h3 id="erreurrelativem"><code>ErreurRelative.m</code></h3>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">err_rel</span> = <span class="hljs-title">ErreurRelative</span><span class="hljs-params">(A, b, x_exact)</span></span>
+<span class="hljs-comment">%ERREURRELATIVE Resout Ax=b et renvoie l'erreur relative.</span>
+<span class="hljs-comment">%   Calcule la solution numerique x_num et la compare a x_exact.</span>
+x_num = A\b;
+err_rel = norm(x_num - x_exact, <span class="hljs-number">1</span>) / norm(x_exact, <span class="hljs-number">1</span>);
+<span class="hljs-keyword">end</span>
+</div></code></pre>
+<h3 id="etudeperturbationbm"><code>EtudePerturbationB.m</code></h3>
+<pre class="hljs"><code><div><span class="hljs-comment">% Script pour etudier la perturbation du second membre b</span>
+
+<span class="hljs-comment">% 1. Definir une matrice A bien conditionnee (exemple: matrice aleatoire)</span>
+n = <span class="hljs-number">5</span>;
+A = <span class="hljs-built_in">rand</span>(n);
+
+<span class="hljs-comment">% S'assurer qu'elle est bien conditionnee</span>
+cond_A = cond(A);
+fprintf(<span class="hljs-string">'Conditionnement de A: %f\n'</span>, cond_A);
+
+<span class="hljs-comment">% 2. Definir un vecteur solution exact</span>
+x_exact = <span class="hljs-built_in">ones</span>(n, <span class="hljs-number">1</span>);
+
+<span class="hljs-comment">% 3. Calculer b</span>
+b_exact = A * x_exact;
+
+<span class="hljs-comment">% 4. Ajouter une perturbation a b</span>
+delta_norm = <span class="hljs-number">1e-6</span>; <span class="hljs-comment">% Norme de la perturbation</span>
+delta = <span class="hljs-built_in">rand</span>(n, <span class="hljs-number">1</span>);
+delta = delta / norm(delta) * delta_norm; <span class="hljs-comment">% Normaliser le vecteur de perturbation</span>
+b_perturbe = b_exact + delta;
+
+<span class="hljs-comment">% 5. Resoudre le systeme perturbe</span>
+x_perturbe = A \ b_perturbe;
+
+<span class="hljs-comment">% 6. Calculer l'erreur relative</span>
+err_rel = norm(x_perturbe - x_exact) / norm(x_exact);
+
+fprintf(<span class="hljs-string">'Norme de la perturbation sur b: %e\n'</span>, delta_norm);
+fprintf(<span class="hljs-string">'Erreur relative sur la solution x: %e\n'</span>, err_rel);
+</div></code></pre>
+<h3 id="etudeperturbationam"><code>EtudePerturbationA.m</code></h3>
+<pre class="hljs"><code><div><span class="hljs-comment">% Script pour etudier la perturbation de la matrice A</span>
+<span class="hljs-comment">% 1. Initialisation</span>
+n = <span class="hljs-number">10</span>;
+A = <span class="hljs-built_in">rand</span>(n);
+x_exact = <span class="hljs-built_in">ones</span>(n, <span class="hljs-number">1</span>);
+b = A * x_exact;
+<span class="hljs-comment">% Matrice de perturbation aleatoire B</span>
+B = <span class="hljs-built_in">rand</span>(n);
+<span class="hljs-comment">% 2. Iteration sur epsilon</span>
+epsilon_values = <span class="hljs-built_in">logspace</span>(<span class="hljs-number">-12</span>, <span class="hljs-number">0</span>, <span class="hljs-number">100</span>); <span class="hljs-comment">% 100 valeurs de 10^-12 a 10^0</span>
+erreurs = [];
+conditions = [];
+<span class="hljs-keyword">for</span> epsilon = epsilon_values
+    <span class="hljs-comment">% 3. Creer la matrice perturbee</span>
+    A_perturbe = A + epsilon * B;
+    <span class="hljs-comment">% 4. Resoudre le systeme</span>
+    x_perturbe = A_perturbe \ b;
+    <span class="hljs-comment">% 5. Stocker l'erreur et le conditionnement</span>
+    err = norm(x_perturbe - x_exact) / norm(x_exact);
+    erreurs = [erreurs, err];
+    cond_A_p = cond(A_perturbe);
+    conditions = [conditions, cond_A_p];
+<span class="hljs-keyword">end</span>
+<span class="hljs-comment">% 6. Tracer les resultats</span>
+<span class="hljs-built_in">figure</span>;
+<span class="hljs-comment">% Erreur relative en fonction de epsilon</span>
+subplot(<span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>);
+loglog(epsilon_values, erreurs, <span class="hljs-string">'b-o'</span>);
+title(<span class="hljs-string">'Evolution de l''erreur relative en fonction de epsilon'</span>);
+xlabel(<span class="hljs-string">'Epsilon'</span>);
+ylabel(<span class="hljs-string">'Erreur relative'</span>);
+grid on;
+<span class="hljs-comment">% Conditionnement en fonction de epsilon</span>
+subplot(<span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
+loglog(epsilon_values, conditions, <span class="hljs-string">'r-o'</span>);
+title(<span class="hljs-string">'Evolution du conditionnement en fonction de epsilon'</span>);
+xlabel(<span class="hljs-string">'Epsilon'</span>);
+ylabel(<span class="hljs-string">'Conditionnement'</span>);
+grid on;
+</div></code></pre>
+<h3 id="etudematricehilbertm"><code>EtudeMatriceHilbert.m</code></h3>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">EtudeMatriceHilbert</span><span class="hljs-params">(n)</span></span>
+<span class="hljs-comment">%ETUDEMATRICEHILBERT Etudie la matrice de Hilbert de taille n.</span>
+
+<span class="hljs-comment">% Generation de la matrice de Hilbert</span>
+H = <span class="hljs-built_in">hilb</span>(n);
+
+<span class="hljs-comment">% Vecteur solution exacte</span>
+x_exact = <span class="hljs-built_in">ones</span>(n, <span class="hljs-number">1</span>);
+
+<span class="hljs-comment">% Calcul du second membre</span>
+b = H * x_exact;
+
+<span class="hljs-comment">% Calcul des nombres de condition</span>
+cond1_H = Conditionnement1(H);
+cond2_H = Conditionnement2(H);
+condInf_H = ConditionnementInf(H);
+
+<span class="hljs-comment">% Affichage des nombres de condition</span>
+fprintf(<span class="hljs-string">'Matrice de Hilbert de taille %d:\n'</span>, n);
+fprintf(<span class="hljs-string">'Conditionnement (norme 1): %e\n'</span>, cond1_H);
+fprintf(<span class="hljs-string">'Conditionnement (norme 2): %e\n'</span>, cond2_H);
+fprintf(<span class="hljs-string">'Conditionnement (norme inf): %e\n'</span>, condInf_H);
+
+<span class="hljs-comment">% Calcul de l'erreur relative</span>
+err_rel_H = ErreurRelative(H, b, x_exact);
+
+fprintf(<span class="hljs-string">'Erreur relative (norme 1): %e\n\n'</span>, err_rel_H);
+
+<span class="hljs-keyword">end</span>
+</div></code></pre>
+<h3 id="etudematricevandermondem"><code>EtudeMatriceVandermonde.m</code></h3>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">EtudeMatriceVandermonde</span><span class="hljs-params">(n)</span></span>
+<span class="hljs-comment">%ETUDEMATRICEVANDERMONDE Etudie la matrice de Vandermonde de taille n.</span>
+
+<span class="hljs-comment">% Generation de la matrice de Vandermonde</span>
+<span class="hljs-comment">% Pour une matrice de Vandermonde, on a besoin d'un vecteur x pour la construire.</span>
+<span class="hljs-comment">% Utilisons un vecteur simple pour l'exemple.</span>
+x_vander = <span class="hljs-number">1</span>:n;
+V = <span class="hljs-built_in">vander</span>(x_vander);
+
+<span class="hljs-comment">% Vecteur solution exacte</span>
+x_exact = <span class="hljs-built_in">ones</span>(n, <span class="hljs-number">1</span>);
+
+<span class="hljs-comment">% Calcul du second membre</span>
+b = V * x_exact;
+
+<span class="hljs-comment">% Calcul des nombres de condition</span>
+cond1_V = Conditionnement1(V);
+cond2_V = Conditionnement2(V);
+condInf_V = ConditionnementInf(V);
+
+<span class="hljs-comment">% Affichage des nombres de condition</span>
+fprintf(<span class="hljs-string">'Matrice de Vandermonde de taille %d:\n'</span>, n);
+fprintf(<span class="hljs-string">'Conditionnement (norme 1): %e\n'</span>, cond1_V);
+fprintf(<span class="hljs-string">'Conditionnement (norme 2): %e\n'</span>, cond2_V);
+fprintf(<span class="hljs-string">'Conditionnement (norme inf): %e\n'</span>, condInf_V);
+
+<span class="hljs-comment">% Calcul de l'erreur relative</span>
+err_rel_V = ErreurRelative(V, b, x_exact);
+
+fprintf(<span class="hljs-string">'Erreur relative (norme 1): %e\n\n'</span>, err_rel_V);
+
+<span class="hljs-keyword">end</span>
+</div></code></pre>
+<h3 id="etudematricetridiagonalem"><code>EtudeMatriceTridiagonale.m</code></h3>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">EtudeMatriceTridiagonale</span><span class="hljs-params">(n)</span></span>
+<span class="hljs-comment">%ETUDEMATRICETRIDAGONALE Etudie la matrice tridiagonale de taille n.</span>
+<span class="hljs-comment">% 1. Generation de la matrice tridiagonale</span>
+<span class="hljs-comment">% Une matrice tridiagonale simple avec des 1 sur la diagonale principale</span>
+<span class="hljs-comment">% et les diagonales adjacentes.</span>
+A_tridiag = <span class="hljs-built_in">diag</span>(<span class="hljs-built_in">ones</span>(n, <span class="hljs-number">1</span>)) + <span class="hljs-built_in">diag</span>(<span class="hljs-built_in">ones</span>(n<span class="hljs-number">-1</span>, <span class="hljs-number">1</span>), <span class="hljs-number">1</span>) + <span class="hljs-built_in">diag</span>(<span class="hljs-built_in">ones</span>(n<span class="hljs-number">-1</span>, <span class="hljs-number">1</span>), <span class="hljs-number">-1</span>);
+
+<span class="hljs-comment">% Vecteur solution exacte</span>
+x_exact = <span class="hljs-built_in">ones</span>(n, <span class="hljs-number">1</span>);
+
+<span class="hljs-comment">% Calcul du second membre</span>
+b = A_tridiag * x_exact;
+
+<span class="hljs-comment">% Calcul des nombres de condition</span>
+cond1_T = Conditionnement1(A_tridiag);
+cond2_T = Conditionnement2(A_tridiag);
+condInf_T = ConditionnementInf(A_tridiag);
+
+<span class="hljs-comment">% Affichage des nombres de condition</span>
+fprintf(<span class="hljs-string">'Matrice Tridiagonale de taille %d:\n'</span>, n);
+fprintf(<span class="hljs-string">'Conditionnement (norme 1): %e\n'</span>, cond1_T);
+fprintf(<span class="hljs-string">'Conditionnement (norme 2): %e\n'</span>, cond2_T);
+fprintf(<span class="hljs-string">'Conditionnement (norme inf): %e\n'</span>, condInf_T);
+
+<span class="hljs-comment">% Calcul de l'erreur relative</span>
+err_rel_T = ErreurRelative(A_tridiag, b, x_exact);
+fprintf(<span class="hljs-string">'Erreur relative (norme 1): %e\n\n'</span>, err_rel_T);
+
+<span class="hljs-keyword">end</span>
+</div></code></pre>
+<h3 id="comparerlum"><code>ComparerLU.m</code></h3>
+<pre class="hljs"><code><div><span class="hljs-comment">% Script pour comparer la resolution directe (A\b) et la factorisation LU</span>
+
+<span class="hljs-comment">% --- Cas 1: Matrice bien conditionnee ---</span>
+fprintf(<span class="hljs-string">'--- Cas 1: Matrice aleatoire bien conditionnee ---\n'</span>);
+n_bien = <span class="hljs-number">100</span>;
+A_bien = <span class="hljs-built_in">rand</span>(n_bien);
+x_exact_bien = <span class="hljs-built_in">ones</span>(n_bien, <span class="hljs-number">1</span>);
+b_bien = A_bien * x_exact_bien;
+
+<span class="hljs-comment">% Methode directe</span>
+tic;
+x_direct_bien = A_bien \ b_bien;
+temps_direct_bien = toc;
+err_direct_bien = norm(x_direct_bien - x_exact_bien) / norm(x_exact_bien);
+
+fprintf(<span class="hljs-string">'Methode directe (A\\b):\n'</span>);
+fprintf(<span class="hljs-string">'  Temps: %f secondes\n'</span>, temps_direct_bien);
+fprintf(<span class="hljs-string">'  Erreur relative: %e\n'</span>, err_direct_bien);
+
+<span class="hljs-comment">% Methode LU</span>
+tic;
+[L, U, P] = lu(A_bien);
+y = L \ (P * b_bien);
+x_lu_bien = U \ y;
+temps_lu_bien = toc;
+err_lu_bien = norm(x_lu_bien - x_exact_bien) / norm(x_exact_bien);
+
+fprintf(<span class="hljs-string">'Methode de factorisation LU:\n'</span>);
+fprintf(<span class="hljs-string">'  Temps: %f secondes\n'</span>, temps_lu_bien);
+fprintf(<span class="hljs-string">'  Erreur relative: %e\n\n'</span>, err_lu_bien);
+
+<span class="hljs-comment">% --- Cas 2: Matrice mal conditionnee (Hilbert) ---</span>
+fprintf(<span class="hljs-string">'--- Cas 2: Matrice de Hilbert mal conditionnee ---\n'</span>);
+n_mal = <span class="hljs-number">15</span>;
+A_mal = <span class="hljs-built_in">hilb</span>(n_mal);
+x_exact_mal = <span class="hljs-built_in">ones</span>(n_mal, <span class="hljs-number">1</span>);
+b_mal = A_mal * x_exact_mal;
+fprintf(<span class="hljs-string">'Conditionnement de la matrice de Hilbert: %e\n'</span>, cond(A_mal));
+
+<span class="hljs-comment">% Methode directe</span>
+tic;
+x_direct_mal = A_mal \ b_mal;
+temps_direct_mal = toc;
+err_direct_mal = norm(x_direct_mal - x_exact_mal) / norm(x_exact_mal);
+
+fprintf(<span class="hljs-string">'Methode directe (A\\b):\n'</span>);
+fprintf(<span class="hljs-string">'  Temps: %f secondes\n'</span>, temps_direct_mal);
+fprintf(<span class="hljs-string">'  Erreur relative: %e\n'</span>, err_direct_mal);
+
+<span class="hljs-comment">% Methode LU</span>
+tic;
+[L, U, P] = lu(A_mal);
+y = L \ (P * b_mal);
+x_lu_mal = U \ y;
+temps_lu_mal = toc;
+err_lu_mal = norm(x_lu_mal - x_exact_mal) / norm(x_exact_mal);
+
+fprintf(<span class="hljs-string">'Methode de factorisation LU:\n'</span>);
+fprintf(<span class="hljs-string">'  Temps: %f secondes\n'</span>, temps_lu_mal);
+fprintf(<span class="hljs-string">'  Erreur relative: %e\n'</span>, err_lu_mal);
+</div></code></pre>
+<h3 id="figureconditionnementm"><code>FigureConditionnement.m</code></h3>
+<pre class="hljs"><code><div><span class="hljs-comment">% Script pour visualiser et comparer le conditionnement de differentes matrices</span>
+
+<span class="hljs-comment">% --- Initialisation ---</span>
+n = <span class="hljs-number">10</span>; <span class="hljs-comment">% Taille des matrices</span>
+x_exact = <span class="hljs-built_in">ones</span>(n, <span class="hljs-number">1</span>);
+epsilon_values = <span class="hljs-built_in">logspace</span>(<span class="hljs-number">-16</span>, <span class="hljs-number">0</span>, <span class="hljs-number">100</span>);
+matrix_types = {<span class="hljs-string">'Aleatoire'</span>, <span class="hljs-string">'Hilbert'</span>, <span class="hljs-string">'Diagonale'</span>};
+
+<span class="hljs-built_in">figure</span>;
+<span class="hljs-built_in">hold</span> on;
+
+<span class="hljs-comment">% --- Boucle sur les types de matrices ---</span>
+<span class="hljs-keyword">for</span> <span class="hljs-built_in">i</span> = <span class="hljs-number">1</span>:<span class="hljs-built_in">length</span>(matrix_types)
+    <span class="hljs-built_in">type</span> = matrix_types{<span class="hljs-built_in">i</span>};
+    erreurs = [];
+    
+    <span class="hljs-comment">% 1. Generation de la matrice A</span>
+    <span class="hljs-keyword">switch</span> <span class="hljs-built_in">type</span>
+        <span class="hljs-keyword">case</span> <span class="hljs-string">'Aleatoire'</span>
+            A = <span class="hljs-built_in">rand</span>(n, n);
+        <span class="hljs-keyword">case</span> <span class="hljs-string">'Hilbert'</span>
+            A = <span class="hljs-built_in">hilb</span>(n);
+        <span class="hljs-keyword">case</span> <span class="hljs-string">'Diagonale'</span>
+            <span class="hljs-comment">% Matrice diagonale avec des valeurs tres espacees pour etre mal conditionnee</span>
+            A = <span class="hljs-built_in">diag</span>(<span class="hljs-built_in">logspace</span>(<span class="hljs-number">5</span>, <span class="hljs-number">-5</span>, n)); 
+    <span class="hljs-keyword">end</span>
+    
+    b = A * x_exact;
+    B = <span class="hljs-built_in">rand</span>(n, n); <span class="hljs-comment">% Matrice de perturbation</span>
+    
+    fprintf(<span class="hljs-string">'Traitement de la matrice: %s (Cond = %e)\n'</span>, <span class="hljs-built_in">type</span>, cond(A));
+
+    <span class="hljs-comment">% 2. Boucle sur les perturbations</span>
+    <span class="hljs-keyword">for</span> epsilon = epsilon_values
+        A_perturbe = A + epsilon * B;
+        x_perturbe = A_perturbe \ b;
+        err = norm(x_perturbe - x_exact) / norm(x_exact);
+        erreurs = [erreurs, err];
+    <span class="hljs-keyword">end</span>
+    
+    <span class="hljs-comment">% 3. Tracer la courbe pour ce type de matrice</span>
+    loglog(epsilon_values, erreurs, <span class="hljs-string">'-'</span>, <span class="hljs-string">'LineWidth'</span>, <span class="hljs-number">2</span>);
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-comment">% --- Finalisation du graphique ---</span>
+<span class="hljs-built_in">hold</span> off;
+title(<span class="hljs-string">'Comparaison de l''erreur relative pour differents types de matrices'</span>);
+xlabel(<span class="hljs-string">'Magnitude de la perturbation (epsilon)'</span>);
+ylabel(<span class="hljs-string">'Erreur relative de la solution'</span>);
+<span class="hljs-built_in">legend</span>(matrix_types);
+grid on;
+axis([<span class="hljs-number">1e-16</span> <span class="hljs-number">1</span> <span class="hljs-number">1e-15</span> <span class="hljs-number">1e5</span>]); <span class="hljs-comment">% Ajuster les axes pour une meilleure visualisation</span>
+</div></code></pre>
+<h3 id="8-fonctions-bonus">8. Fonctions Bonus</h3>
+<h3 id="estmalconditionneem"><code>EstMalConditionnee.m</code></h3>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">est_mal</span> = <span class="hljs-title">EstMalConditionnee</span><span class="hljs-params">(A, seuil)</span></span>
+<span class="hljs-comment">%ESTMALCONDITIONNEE Verifie si une matrice est mal conditionnee.</span>
+<span class="hljs-comment">%   Renvoie vrai si le conditionnement (norme 2) de A depasse un seuil.</span>
+<span class="hljs-keyword">if</span> cond(A, <span class="hljs-number">2</span>) &gt; seuil
+    est_mal = <span class="hljs-built_in">true</span>;
+<span class="hljs-keyword">else</span>
+    est_mal = <span class="hljs-built_in">false</span>;
+<span class="hljs-keyword">end</span>
+<span class="hljs-keyword">end</span>
+</div></code></pre>
+<p><strong><code>test_regularisation.m</code></strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment">% Script pour tester la régularisation</span>
+n = <span class="hljs-number">10</span>;
+H = <span class="hljs-built_in">hilb</span>(n);
+x_exact = <span class="hljs-built_in">ones</span>(n, <span class="hljs-number">1</span>);
+b = H * x_exact;
+
+<span class="hljs-built_in">disp</span>([<span class="hljs-string">'Conditionnement de Hilbert: '</span>, num2str(cond(H))]);
+
+<span class="hljs-comment">% Solution sans régularisation</span>
+x_sol = H \ b;
+err_sol = norm(x_sol - x_exact) / norm(x_exact);
+<span class="hljs-built_in">disp</span>([<span class="hljs-string">'Erreur sans régularisation: '</span>, num2str(err_sol)]);
+
+<span class="hljs-comment">% Solution avec régularisation de Tikhonov</span>
+lambda = <span class="hljs-number">1e-10</span>;
+H_reg = H + lambda * <span class="hljs-built_in">eye</span>(n);
+x_reg = H_reg \ b;
+err_reg = norm(x_reg - x_exact) / norm(x_exact);
+<span class="hljs-built_in">disp</span>([<span class="hljs-string">'Erreur avec régularisation (lambda='</span>, num2str(lambda), <span class="hljs-string">'): '</span>, num2str(err_reg)]);
+<span class="hljs-built_in">disp</span>([<span class="hljs-string">'Conditionnement avec régularisation: '</span>, num2str(cond(H_reg))]);
+</div></code></pre>
+<h2 id="remerciements">Remerciements</h2>
+<p>Nous tenons à exprimer nos sincères remerciements à <strong>Dr. Mohamed Saad Bouh ELEMINE VALL</strong>, notre professeur à la Faculté des Sciences et Techniques de l'Université de Nouakchott, pour son encadrement rigoureux, ses précieuses orientations et sa disponibilité tout au long de la réalisation de ce projet.</p>
+<p>Son expertise et sa pédagogie ont été des atouts essentiels pour approfondir notre compréhension du conditionnement des matrices et de la sensibilité des systèmes linéaires aux perturbations. Grâce à sa passion pour l’analyse numérique, il a su susciter chez nous un intérêt renouvelé pour les méthodes numériques et leur application pratique.</p>
+<p>Ce projet a été une expérience enrichissante, et cela n’aurait pas été possible sans son soutien constant et ses encouragements. Qu’il trouve ici l’expression de notre profonde gratitude et de notre respect académique.</p>
+
+</body>
+</html>
